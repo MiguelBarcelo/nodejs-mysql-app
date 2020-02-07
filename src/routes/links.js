@@ -7,24 +7,37 @@ router.get('/add', (req, res) => {
     res.render('links/add');
 });
 
-router.post('/add', async (req, res) => {
+router.post('/add', (req, res) => {
     const { title, url, description } = req.body;
     const newLink = {
         title,
         url,
         description
     };
-    await pool.query('INSERT INTO links SET ?', [newLink]);
-    //res.send('received');
-    res.redirect('/links');
+    
+    pool.query('INSERT INTO links (title, url, descriptio) VALUES (?, ?, ?)', [title, url, description])
+        .then(rows => {
+            res.redirect('/links');
+        })
+        .catch(err => {
+            console.error("Error Adding link ", err);
+        });
 });
 
+/*
 router.get('/', async (req, res) => {
     const links = await pool.query('SELECT * FROM links');
-    console.log(links);
-    //res.send('listas iran aquí');
     res.render('links/list', {links: links});
-
+});
+*/
+router.get('/', (req, res) => {
+    pool.query('SELECT * FROM links')
+        .then(links => {
+            res.render('links/list', {links: links});
+        })
+        .catch(err => {
+            console.error("Error Finding links ", err);
+        })
 });
 
 module.exports = router;

@@ -48,13 +48,23 @@ Quick setup -- if you've done this kind of thing before
 https://github.com/MiguelBarcelo/nodejs-mysql-app.git
 
 ...or create a new repository on the command line
-echo "# proyecto1" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/MiguelBarcelo/nodejs-mysql-app.git
-git push -u origin master
+> echo "# proyecto1" >> README.md
+> git init
+> git add README.md
+> git commit -m "first commit"
+> git remote add origin https://github.com/MiguelBarcelo/nodejs-mysql-app.git
+> git push -u origin master
 
 ...or push an existing repository from the command line
-git remote add origin https://github.com/MiguelBarcelo/nodejs-mysql-app.git
-git push -u origin master
+> git remote add origin https://github.com/MiguelBarcelo/nodejs-mysql-app.git
+> git push -u origin master
+
+
+MySQL Server
+Source: https://www.zeppelinux.es/corregir-error-1698-28000-access-denied-for-user-rootlocalhost-en-mariadb-mysql/
+------------
+> mysql -u root -p
+Enter password: 
+ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
+MariaDB [mysql]> alter user 'root'@'localhost' identified via mysql_native_password;

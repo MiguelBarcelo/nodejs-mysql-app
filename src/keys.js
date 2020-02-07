@@ -3,6 +3,7 @@ module.exports = {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'database_links'
+        database: 'database_links',
+        connectionLimit: 5
     }
 };
