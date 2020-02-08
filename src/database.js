@@ -8,7 +8,7 @@ const { database } = require('./keys');
 
 const pool = mariadb.createPool(database);
 
-/*pool.getConnection((err, connection) => {
+/*pool.getConnection((err, conn) => {
     if(err) {
         if(err.code === 'PROTOCOL_CONNECTION_LOST') {
             console.error('DATABASE CONNECTION WAS CLOSED');
@@ -24,18 +24,18 @@ const pool = mariadb.createPool(database);
         }
         console.error(`${err.code} ${err.sqlMessage}`);
     }
-    console.log(`connection ${connection}`);
-    if(connection) {
-        connection.release();
+    
+    if(conn) {
+        conn.release();
         console.log('DB is Connected');
     }
     return;
 });
 */
 pool.getConnection()
-    .then(connection => {
-        if(connection) {
-            connection.release();
+    .then(conn => {
+        if(conn) {
+            conn.release();
             console.log('DB is Connected');
         }
         return;
