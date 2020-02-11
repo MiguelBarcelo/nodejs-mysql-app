@@ -21,7 +21,7 @@ router.post('/add', (req, res) => {
             res.redirect('/links');
         })
         .catch(err => {
-            console.error("Error Adding link ", err);
+            console.error("Error adding link ", err);
         });
 });
 
@@ -47,7 +47,7 @@ router.get('/delete/:id', (req, res) => {
 
     pool.query('DELETE FROM links WHERE id=?', [id])
         .then(row => {
-            console.log("row ", row);
+            req.flash('success', 'Link removed successfully');
             res.redirect('/links');
         })
         .catch(err => {
@@ -79,6 +79,7 @@ router.post('/edit/:id', (req, res) => {
     //pool.query('UPDATE links SET ? WHERE id=?', [updLink, id])
     pool.query('UPDATE links SET title=?, url=?, description=? WHERE id=?', [title, url, description, id])
         .then(rows => {
+            req.flash('success', 'Link updated successfully');
             res.redirect('/links');
         })
         .catch(err => {

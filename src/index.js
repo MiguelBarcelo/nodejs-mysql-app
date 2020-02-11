@@ -2,13 +2,14 @@
  * @desc    Configuring our server
  */
 
-const express   = require('express');
-const morgan    = require('morgan');
-const exphbs    = require('express-handlebars');
-const path      = require('path');
-const flash     = require('connect-flash');
-const session   = require('express-session');
-const 
+const express       = require('express');
+const morgan        = require('morgan');
+const exphbs        = require('express-handlebars');
+const path          = require('path');
+const flash         = require('connect-flash');
+const session       = require('express-session');
+const MySQLStore    = require('express-mysql-session');
+const { database }  = require('./keys');
 
 // initializations
 const app = express();
@@ -27,10 +28,10 @@ app.set('view engine', '.hbs');
 
 // Middlewares
 app.use(session({
-    secret: 'myNodejsMysqlSession',
-    resave: false,
-    saveUninitialized: false,
-    store: 
+    secret: 'myNodejsMysqlSecretSession',
+    resave: false,                  // Que no se renueve la sesion
+    saveUninitialized: false,       // Que no se vuelva establecer la sesion
+    store: new MySQLStore(database) // La session es guardada en la DB
 }));
 app.use(flash());
 app.use(morgan('dev'));
