@@ -36,3 +36,11 @@ ALTER TABLE links
     MODIFY id INT(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT = 2;
 
 DESCRIBE links;
+
+
+/**
+ * @desc How to truncate a foreign key constrained table?
+ */
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE table $table_name; 
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,6 +1,10 @@
-const express   = require('express');
-const router    = express.Router();
-const pool      = require('../database');
+const express           = require('express');
+const router            = express.Router();
+const pool              = require('../database');
+const { isLoggedIn }    = require('../lib/auth');
+
+// Middleware de ruta
+router.use(isLoggedIn);
 
 router.get('/add', (req, res) => {
     //res.send('Form'); 
