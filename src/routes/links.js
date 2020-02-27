@@ -18,8 +18,8 @@ router.post('/add', (req, res) => {
         url,
         description
     };
-    
-    pool.query('INSERT INTO links (title, url, description) VALUES (?, ?, ?)', [title, url, description])
+    // req.user.id -> Id de la session del usuario
+    pool.query('INSERT INTO links (title, url, description, user_id) VALUES (?, ?, ?, ?)', [title, url, description, req.user.id])
         .then(rows => {
             req.flash('success', 'Link saved successfully');
             res.redirect('/links');
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 });
 */
 router.get('/', (req, res) => {
-    pool.query('SELECT * FROM links')
+    pool.query('SELECT * FROM links where user_id=?', [req.user.id])
         .then(links => {
             res.render('links/list', {links: links});
         })
@@ -49,7 +49,7 @@ router.get('/', (req, res) => {
 router.get('/delete/:id', (req, res) => {
     const { id } = req.params;  //console.log(req.params.id);
 
-    pool.query('DELETE FROM links WHERE id=?', [id])
+    pool.query('DELETE FROM links WHERE id=? and user_id=?', [id, req.user.id])
         .then(row => {
             req.flash('success', 'Link removed successfully');
             res.redirect('/links');
@@ -62,7 +62,7 @@ router.get('/delete/:id', (req, res) => {
 router.get('/edit/:id', (req, res) => {
     const { id } = req.params;
 
-    pool.query('SELECT * FROM links WHERE id=?', [id])
+    pool.query('SELECT * FROM links WHERE id=? and user_id=?', [id, req.user.id])
         .then(link => {
             res.render('links/edit', {link: link[0]});
         })
@@ -81,7 +81,7 @@ router.post('/edit/:id', (req, res) => {
     };
 
     //pool.query('UPDATE links SET ? WHERE id=?', [updLink, id])
-    pool.query('UPDATE links SET title=?, url=?, description=? WHERE id=?', [title, url, description, id])
+    pool.query('UPDATE links SET title=?, url=?, description=? WHERE id=? and user_id=?', [title, url, description, id, req.user.id])
         .then(rows => {
             req.flash('success', 'Link updated successfully');
             res.redirect('/links');
